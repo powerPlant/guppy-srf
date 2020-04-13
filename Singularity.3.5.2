@@ -3,11 +3,11 @@ From: centos:7
 
 %labels
 Maintainer eric.burgueno@plantandfood.co.nz
-Version 3.2.4
+Version 3.5.2
 
 %files
   ## You must download the RPM from the Nanopore Tech Community portal
-  ont-guppy-3.2.4-1.el7.x86_64.rpm /tmp
+  ont-guppy-3.5.2-1.el7.x86_64.rpm /tmp
 
 %post
   ## Install from dependencies
@@ -15,7 +15,7 @@ Version 3.2.4
   yum -y install hdf5 libaec libgfortran libquadmath libsodium openpgm zeromq
 
   ## Force install ignoring the dependency on libcuda.so.1 (will be present at runtime)
-  rpm -ivh --nodeps /tmp/ont-guppy-3.2.4-1.el7.x86_64.rpm
+  rpm -ivh --nodeps /tmp/ont-guppy-3.5.2-1.el7.x86_64.rpm
 
 %runscript
 if [ -x /usr/bin/$SINGULARITY_NAME ]; then

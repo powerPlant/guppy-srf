@@ -18,9 +18,9 @@ Version 3.4.4
   rpm -ivh --nodeps /tmp/ont-guppy-3.4.4-1.el7.x86_64.rpm
 
 %runscript
-if [ $# -eq 0 ]; then
-  /bin/echo -e "This Singularity image cannot provide a single entrypoint. Please use \"$SINGULARITY_NAME <cmd>\" or \"singularity exec $SINGULARITY_NAME <cmd>\", where <cmd> is one of the following:\n"
-  exec ls /usr/bin/guppy*
+if [ -x /usr/bin/$SINGULARITY_NAME ]; then
+    exec $SINGULARITY_NAME "$@"
 else
-  exec "$@"
+  /bin/echo -e "This Singularity image cannot provide a single entrypoint. Please use \"singularity exec $SINGULARITY_NAME <cmd>\", where <cmd> is one of the following:\n"
+  exec ls /usr/bin/guppy*
 fi
