@@ -1,1 +1,1 @@
-Singularity.3.5.2
+Singularity.3.6.1
