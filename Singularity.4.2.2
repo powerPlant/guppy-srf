@@ -1,0 +1,26 @@
+Bootstrap: docker
+From: centos:7
+
+%labels
+Maintainer eric.burgueno@plantandfood.co.nz
+Version 4.2.2
+
+%files
+  ## You must download the RPM from the Nanopore Tech Community portal
+  ont-guppy-4.2.2-1.el7.x86_64.rpm /tmp
+
+%post
+  ## Install from dependencies
+  yum -y install epel-release
+  yum -y install hdf5 libaec libgfortran libquadmath libsodium openpgm zeromq
+
+  ## Force install ignoring the dependency on libcuda.so.1 (will be present at runtime)
+  rpm -ivh --nodeps /tmp/ont-guppy-4.2.2-1.el7.x86_64.rpm
+
+%runscript
+if [ -x /usr/bin/$SINGULARITY_NAME ]; then
+    exec $SINGULARITY_NAME "$@"
+else
+  /bin/echo -e "This Singularity image cannot provide a single entrypoint. Please use \"singularity exec $SINGULARITY_NAME <cmd>\", where <cmd> is one of the following:\n"
+  exec ls /usr/bin/guppy*
+fi
