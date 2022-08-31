@@ -1,1 +1,1 @@
-Singularity.5.0.7
+Singularity.6.0.1
