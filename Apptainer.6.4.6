@@ -1,0 +1,29 @@
+Bootstrap: docker
+From: centos:7
+
+%labels
+Maintainer ben.warren@plantandfood.co.nz
+Version 6.4.6
+
+%files
+  ## You must download the RPM from the Nanopore Tech Community portal
+  #ont-guppy-6.3.4-1.el7.x86_64.rpm /
+
+%post
+  GUPPY_RPM="ont-guppy-6.4.6-1.el7.x86_64.rpm"
+  curl -Lo /${GUPPY_RPM} https://cdn.oxfordnanoportal.com/software/analysis/${GUPPY_RPM}
+  ## Install from dependencies
+  yum -y install epel-release
+  yum -y install hdf5 libaec libgfortran libquadmath libsodium openpgm zeromq
+
+  ## Force install ignoring the dependency on libcuda.so.1 (will be present at runtime)
+  rpm -ivh --nodeps /${GUPPY_RPM}
+  rm -f /${GUPPY_RPM}
+
+%runscript
+if [ -x /usr/bin/$APPTAINER_NAME ]; then
+    exec $APPTAINER_NAME "$@"
+else
+  /bin/echo -e "This Apptainer image cannot provide a single entrypoint. Please use \"apptainer exec $APPTAINER_NAME <cmd>\", where <cmd> is one of the following:\n"
+  exec ls /usr/bin/guppy*
+fi
