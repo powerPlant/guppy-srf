@@ -3,16 +3,17 @@ From: centos:7
 
 %labels
 Maintainer ben.warren@plantandfood.co.nz
-Version 6.4.6
+Version 6.4.6-gpu
 
 %post
-  GUPPY_RPM="ont-guppy-cpu-6.4.6-1.el7.x86_64.rpm"
+  GUPPY_RPM="ont-guppy-6.4.6-1.el7.x86_64.rpm"
   curl -LO https://cdn.oxfordnanoportal.com/software/analysis/${GUPPY_RPM}
   ## Install from dependencies
   yum -y install epel-release
   yum -y install hdf5 libaec libgfortran libquadmath libsodium openpgm zeromq
 
-  rpm -ivh ${GUPPY_RPM}
+  ## Force install ignoring the dependency on libcuda.so.1 (will be present at runtime)
+  rpm -ivh --nodeps ${GUPPY_RPM}
   rm -f ${GUPPY_RPM}
 
 %runscript
